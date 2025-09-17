@@ -29,10 +29,10 @@
         --highlight: #fbbf24; /* amber-400 */
       }
 
+      /* (moved WebAudio code to script section) */
       * {
         box-sizing: border-box;
       }
-
       body {
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
@@ -47,31 +47,24 @@
         display: grid;
         grid-template-rows: auto 1fr auto;
         min-height: 100vh;
-        max-height: 100vh; /* Restrict height to viewport */
-        max-width: 100%; /* Restrict width to viewport */
-        overflow: hidden; /* Prevent all scrolling */
       }
-
       header {
         padding: 16px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
       }
-
       header h1 {
         font-size: 18px;
         letter-spacing: 0.6px;
         margin: 0;
         color: var(--text);
       }
-
       header .controls {
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
       }
-
       .btn {
         appearance: none;
         border: 0;
@@ -86,43 +79,35 @@
         font-size: 18px;
         letter-spacing: 0.2px;
       }
-
       .btn:active {
         transform: translateY(1px);
       }
-
       .btn-green {
         background: #22c55e;
         color: #052e16;
       }
-
       .btn-green:hover {
         background: #16a34a;
       }
-
       .btn-red {
         background: #ef4444;
         color: #3b0a0a;
       }
-
       .btn-red:hover {
         background: #dc2626;
       }
-
+      /* alias for existing buttons */
       .btn-danger {
         background: #ef4444;
         color: #3b0a0a;
       }
-
       .btn-danger:hover {
         background: #dc2626;
       }
-
       .btn-gray {
         background: #1f2937;
         color: #e5e7eb;
       }
-
       .btn-gray:hover {
         background: #263241;
       }
@@ -133,17 +118,13 @@
         padding: 0 20px 20px;
         align-items: start;
         grid-template-columns: 1fr;
-        max-width: 100%; /* Full viewport width */
+        max-width: 1100px;
         width: 100%;
         margin: 0 auto;
-        max-height: calc(100vh - 80px); /* Account for header/footer */
-        overflow: hidden; /* Prevent scrolling within main */
       }
-
       @media (min-width: 900px) {
         main {
-          grid-template-columns: auto 340px;
-          max-width: 100%; /* Ensure no overflow */
+          grid-template-columns: auto;
         }
       }
 
@@ -158,55 +139,47 @@
         padding: 14px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
           inset 0 1px 0 rgba(255, 255, 255, 0.04);
-        max-width: 100%; /* Prevent card from exceeding viewport */
       }
 
+      /* Board wrapper: provide inner padding around board and controls.
+       The inner content area (where the board sits) remains the same size,
+       while the outer card grows by the padding. */
       .board-wrap {
         display: grid;
         gap: 10px;
-        --content-width: clamp(
-          240px,
-          100vw - 32px,
-          640px
-        ); /* Responsive board width */
-        --pad-x: 16px;
-        --pad-y: 16px;
+        /* Content (inner) width equals the board's responsive width */
+        --content-width: clamp(240px, 86vw, 640px);
+        /* Padding around everything */
+        --pad-x: 16px; /* horizontal padding */
+        --pad-y: 16px; /* vertical padding */
         width: calc(var(--content-width) + (var(--pad-x) * 2));
-        max-width: 100%; /* Prevent overflow */
-        max-height: calc(
-          100vh - 80px
-        ); /* Fit within viewport minus header/footer */
+        max-width: calc(640px + (var(--pad-x) * 2));
         margin: 0 auto;
         padding: var(--pad-y) var(--pad-x);
-        overflow: hidden; /* Prevent internal scrolling */
       }
-
+      /* Ensure inner rows fill the card width so border encloses all children visually */
       .board-wrap .row,
       .board-wrap .timers,
       .board-wrap #status,
       .board-wrap #role {
         width: 100%;
       }
-
       #board {
         width: 100%;
         max-width: 640px;
-        max-height: calc(100vh - 120px); /* Ensure board fits vertically */
       }
-
       @media (min-width: 900px) {
         #board {
-          width: clamp(240px, 100vw - 360px, 640px); /* Fit beside panel */
-          max-height: calc(100vh - 120px);
+          width: 640px;
         }
       }
 
+      /* Timers */
       .timers {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
       }
-
       .clock {
         background: linear-gradient(
           180deg,
@@ -223,44 +196,38 @@
         letter-spacing: 0.5px;
         font-variant-numeric: tabular-nums;
       }
-
       .clock .side {
         opacity: 0.7;
         font-weight: 700;
       }
-
       .clock.active {
         border-color: var(--accent-2);
         box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25) inset;
       }
-
       .clock.low {
         border-color: var(--danger);
         box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25) inset;
         color: #fecaca;
       }
 
+      /* Right panel */
       .panel {
         display: grid;
         gap: 12px;
       }
-
       .field {
         display: grid;
         gap: 8px;
       }
-
       .row {
         display: flex;
         gap: 8px;
         align-items: center;
       }
-
       label {
         font-size: 12px;
         color: var(--muted);
       }
-
       select,
       input {
         background: rgba(255, 255, 255, 0.06);
@@ -270,6 +237,7 @@
         border-radius: 10px;
       }
 
+      /* Status + moves */
       #status {
         font-size: 14px;
         color: #dbeafe;
@@ -278,74 +246,67 @@
         background: rgba(59, 130, 246, 0.08);
         border: 1px solid rgba(59, 130, 246, 0.2);
       }
-
       .moves {
         max-height: 320px;
         overflow: auto;
         border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
-
       .moves table {
         width: 100%;
         border-collapse: collapse;
       }
-
       .moves th,
       .moves td {
         padding: 8px 10px;
         font-size: 14px;
       }
-
       .moves tr:nth-child(odd) {
         background: rgba(255, 255, 255, 0.03);
       }
 
+      /* Chessboard colors override */
       .white-1e1d7 {
         background: var(--square-light);
       }
-
       .black-3c85d {
         background: var(--square-dark);
       }
-
       .square-highlight {
         box-shadow: inset 0 0 0 4px rgba(251, 191, 36, 0.9) !important;
       }
-
+      /* Ensure inner elements don't add extra margins that skew padding perception */
       .card > * {
         margin: 0;
       }
-
+      /* Ensure controls don't stretch card width unnecessarily */
       .card .field,
       .card .actions {
         width: auto;
       }
-
       #base-mins {
         width: auto;
         display: inline-block;
       }
-
       .card select,
       .card button {
         width: max-content;
       }
-
+      /* Hide redundant name label in the name prompt */
       #name-field label {
         display: none !important;
       }
-
+      /* Compact, dark-mode select with evenly padded arrow */
       #base-mins {
         -webkit-appearance: none;
         appearance: none;
-        background-color: #111827;
+        background-color: #111827; /* slate-900ish */
         color: var(--text);
-        border: 2px solid #1f2937;
+        border: 2px solid #1f2937; /* slate-800 */
         border-radius: 12px;
         font-size: 16px;
         line-height: 1.2;
-        padding: 10px 38px 10px 14px;
+        padding: 10px 38px 10px 14px; /* extra right pad for arrow */
         min-width: 140px;
         max-width: 220px;
         white-space: nowrap;
@@ -354,21 +315,19 @@
         background-position: right 12px center;
         box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.06);
       }
-
       #base-mins:focus {
         outline: none;
         border-color: #2563eb;
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
       }
-
+      /* For click-to-move dots */
       #board .square-55d63 {
         position: relative;
       }
-
+      /* Ensure clicks land on the square, not the image */
       #board img {
         pointer-events: none;
       }
-
       #board .legal-dot {
         position: absolute;
         inset: 0;
@@ -389,6 +348,7 @@
         justify-content: center;
       }
 
+      /* Toasts */
       #toasts {
         position: fixed;
         top: 18px;
@@ -397,11 +357,7 @@
         display: grid;
         gap: 12px;
         z-index: 50;
-        max-width: 100%; /* Ensure toasts don't exceed viewport */
-        max-height: calc(100vh - 36px); /* Fit within viewport */
-        overflow: hidden; /* Prevent toast overflow */
       }
-
       .toast {
         background: #0b1220;
         color: #e5e7eb;
@@ -410,20 +366,16 @@
         border-radius: 14px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
         min-width: 300px;
-        max-width: calc(100vw - 40px); /* Prevent overflow */
         text-align: center;
         font-weight: 800;
         font-size: 16px;
       }
-
       .toast-show {
         animation: toastIn 0.22s ease-out forwards;
       }
-
       .toast-hide {
         animation: toastOut 0.18s ease-in forwards;
       }
-
       @keyframes toastIn {
         from {
           opacity: 0;
@@ -434,7 +386,6 @@
           transform: translate(-50%, 0);
         }
       }
-
       @keyframes toastOut {
         from {
           opacity: 1;
@@ -444,38 +395,6 @@
           opacity: 0;
           transform: translate(-50%, -12px);
         }
-      }
-
-      #overlay {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        max-width: 100%;
-        max-height: 100vh;
-        overflow: hidden; /* Prevent overlay from causing scroll */
-      }
-
-      #overlay .card {
-        position: relative;
-        z-index: 1;
-        display: inline-flex;
-        flex-direction: column;
-        gap: 14px;
-        align-items: center;
-        justify-content: center;
-        width: fit-content;
-        max-width: calc(100vw - 40px); /* Ensure card fits viewport */
-        max-height: calc(100vh - 40px); /* Prevent vertical overflow */
-        background: #0b1220;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-        padding: 24px;
-        border-radius: 18px;
-        text-align: center;
-        transition: width 0.16s ease, height 0.16s ease, padding 0.16s ease,
-          gap 0.16s ease, box-shadow 0.16s ease;
       }
     </style>
   </head>
